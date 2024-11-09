@@ -8,6 +8,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ApolloDriver } from '@nestjs/apollo';
 import { AppResolver } from './app.resolver';
+import { PokemonModule } from './pokemon/pokemon.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -21,6 +23,12 @@ import { AppResolver } from './app.resolver';
         DATABASE_URL: Joi.string().required()
       })
     }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',  // 데이터베이스 유형을 PostgreSQL로 설정
+      url: process.env.DATABASE_URL,  // 환경 변수에서 DB URL 가져오기
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,  // 개발 환경에서만 true로 설정
+    }),
     GraphQLModule.forRootAsync({
       imports: [],
       inject: [],
@@ -33,7 +41,8 @@ import { AppResolver } from './app.resolver';
         }
       }
     }),
-    DomainModule
+    DomainModule,
+    PokemonModule
   ],
 
   controllers: [AppController],

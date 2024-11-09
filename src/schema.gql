@@ -2,6 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type LeagueEntity {
+  id: String!
+  name: String!
+  pokemons: [PokemonEntity!]!
+}
+
+type PokemonEntity {
+  id: String!
+  league: LeagueEntity!
+  name: String!
+  type: String!
+}
+
 type Query {
   hello: String!
+  pokemon(id: String!): PokemonEntity!
+  pokemons: [PokemonEntity!]!
 }
